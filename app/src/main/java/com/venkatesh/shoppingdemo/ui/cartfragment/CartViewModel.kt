@@ -19,15 +19,15 @@ class CartViewModel @Inject constructor(private val repository: ProductRepositor
         }
     }
 
-    fun deleteProductById(id:Int){
+    fun deleteProducts(cartProducts: CartProducts){
         viewModelScope.launch {
-            repository.deleteProductById(id)
+            repository.deleteProducts(cartProducts)
         }
     }
 
-    fun updateProductById(id: Int,qty:Int){
+    fun updateCart(products: CartProducts){
         viewModelScope.launch {
-            repository.updateProductById(id,qty)
+            repository.updateCart(products)
         }
     }
 }

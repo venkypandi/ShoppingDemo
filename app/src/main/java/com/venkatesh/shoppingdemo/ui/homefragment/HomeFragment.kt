@@ -57,14 +57,16 @@ class HomeFragment : Fragment() {
         }
 
         homeViewModel.productDetails.observe(viewLifecycleOwner){
+            cartList.clear()
             if(it.isNullOrEmpty()){
                 count=0
             }else{
                 cartList.addAll(it)
-                binding!!.tvCounter.text = cartList.size.toString()
 
             }
+            binding!!.tvCounter.text = cartList.size.toString()
         }
+
 
         homeViewModel.productResponse.observe(viewLifecycleOwner)  {
             if(it!=null){
@@ -98,9 +100,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun addToCart(data: Product,view: View) {
-        count++
         checkFlag=false
-        binding!!.tvCounter.text = count.toString()
         var image=loadBitmapFromView(view)
         // get location of the clicked view
         if (image != null) {
@@ -112,7 +112,7 @@ class HomeFragment : Fragment() {
                     checkFlag = true
                     var product=it
                     Log.d("addToCart: ",it.toString())
-                    product.qty = it.qty++
+                    product.qty = (it.qty)+1
                     Toast.makeText(requireContext(), "Item already present in the cart", Toast.LENGTH_SHORT).show()
                     homeViewModel.updateCart(product)
                     return
@@ -124,11 +124,10 @@ class HomeFragment : Fragment() {
         }
 
 
-
-
     }
 
-    fun insertProduct(data:Product){
+
+    private fun insertProduct(data:Product){
         homeViewModel.insertProduct(
             products = CartProducts(
                 id =0,
@@ -166,8 +165,6 @@ class HomeFragment : Fragment() {
             v[1].toFloat(),
             u[1].toFloat()-cardView.width
         )
-        Log.d("animateView:1 ",binding!!.imgCpy.right.toString())
-        Log.d("animateView: 2",binding!!.imgCpy.bottom.toString())
 
         val sy = ObjectAnimator.ofFloat(binding!!.imgCpy, "scaleY", 0.8f, 0.1f)
         val sx = ObjectAnimator.ofFloat(binding!!.imgCpy, "scaleX", 0.8f, 0.1f)

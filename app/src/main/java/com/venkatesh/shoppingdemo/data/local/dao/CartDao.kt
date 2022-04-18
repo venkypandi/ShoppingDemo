@@ -10,8 +10,11 @@ interface CartDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertProduct(products: CartProducts)
 
-    @Query("DELETE FROM cart_table WHERE id=:id")
-    suspend fun deleteById(id:Int)
+    @Delete
+    suspend fun deleteProducts(products: CartProducts)
+
+    @Query("DELETE FROM cart_table")
+    suspend fun deleteAllProducts()
 
     @Query("SELECT * FROM cart_table")
     fun getAllProducts():LiveData<List<CartProducts>>
@@ -20,6 +23,6 @@ interface CartDao {
     suspend fun updateProduct(id:Int,quantity:Int)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateCart(products: CartProducts)
+    suspend fun updateCart(products: CartProducts):Int
 
 }

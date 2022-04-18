@@ -1,5 +1,6 @@
 package com.venkatesh.shoppingdemo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -17,5 +18,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
     }
+
 }
 

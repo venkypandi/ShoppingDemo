@@ -1,5 +1,6 @@
 package com.venkatesh.shoppingdemo.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.venkatesh.shoppingdemo.data.local.dao.CartDao
@@ -31,8 +32,8 @@ class ProductRepository @Inject constructor(private val shoppingService:Shopping
         cartDao.insertProduct(products)
     }
 
-    suspend fun deleteProductById(id:Int){
-        cartDao.deleteById(id)
+    suspend fun deleteProducts(cartProducts: CartProducts){
+        cartDao.deleteProducts(cartProducts)
     }
 
     suspend fun updateProductById(id: Int,qty:Int){
@@ -41,6 +42,10 @@ class ProductRepository @Inject constructor(private val shoppingService:Shopping
 
     suspend fun updateCart(products: CartProducts){
         cartDao.updateCart(products)
+    }
+
+    suspend fun deleteAllProducts(){
+        cartDao.deleteAllProducts()
     }
 }
 

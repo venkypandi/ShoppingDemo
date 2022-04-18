@@ -18,5 +18,15 @@
         android:id="@+id/cartFragment"
         android:name="com.venkatesh.shoppingdemo.ui.cartfragment.CartFragment"
         android:label="cart_fragment"
-        tools:layout="@layout/cart_fragment" />
+        tools:layout="@layout/cart_fragment" >
+        <action
+            android:id="@+id/action_cartFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment"
+            app:popUpTo="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.venkatesh.shoppingdemo.ui.checkoutfragment.CheckoutFragment"
+        android:label="fragment_checkout"
+        tools:layout="@layout/fragment_checkout" />
 </navigation>

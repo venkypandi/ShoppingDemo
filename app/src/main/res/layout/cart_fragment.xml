@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:text="My Cart (5)"
+        android:text="My Cart"
         android:textColor="@color/text_grey"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -69,10 +69,11 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
+            android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:text="₹1000"
+            android:text="₹0"
             android:textColor="@color/white"
             android:textSize="40sp"
             android:textStyle="bold"
@@ -81,6 +82,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:id="@+id/btn_checkout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
