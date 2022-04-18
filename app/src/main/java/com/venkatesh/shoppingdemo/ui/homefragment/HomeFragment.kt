@@ -12,12 +12,15 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.*
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.venkatesh.shoppingdemo.data.local.entity.CartProducts
 import com.venkatesh.shoppingdemo.data.remote.model.Product
 import com.venkatesh.shoppingdemo.databinding.HomeFragmentBinding
+import com.venkatesh.shoppingdemo.ui.adapter.CartAdapter
 import com.venkatesh.shoppingdemo.ui.adapter.ProductAdapter
 import com.venkatesh.shoppingdemo.utils.Status
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,9 +32,11 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding
     var count=0
 
-    lateinit var productAdapter: ProductAdapter
+    private lateinit var productAdapter: ProductAdapter
     private val homeViewModel by viewModels<HomeViewModel>()
     var actionbarheight = 0
+    var cartList=ArrayList<CartProducts>()
+    var checkFlag= false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +51,21 @@ class HomeFragment : Fragment() {
                 TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)
         }
 
+        binding!!.ivCart.setOnClickListener {
+            val directions = HomeFragmentDirections.actionHomeFragmentToCartFragment()
+            findNavController().navigate(directions)
+        }
+
+        homeViewModel.productDetails.observe(viewLifecycleOwner){
+            if(it.isNullOrEmpty()){
+                count=0
+            }else{
+                cartList.addAll(it)
+                binding!!.tvCounter.text = cartList.size.toString()
+
+            }
+        }
+
         homeViewModel.productResponse.observe(viewLifecycleOwner)  {
             if(it!=null){
                 when(it.status){
@@ -55,7 +75,8 @@ class HomeFragment : Fragment() {
                     Status.SUCCESS->{
                         if(it.data != null){
                             productAdapter = ProductAdapter(requireActivity(),
-                                it.data.products
+                                it.data.products,
+                                cartList
                             ) { data: Product,view:View
                                 -> addToCart(data,view) }
                             binding?.rvProducts?.adapter = productAdapter
@@ -71,54 +92,89 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+
+
         return _binding!!.root
     }
 
     private fun addToCart(data: Product,view: View) {
         count++
+        checkFlag=false
         binding!!.tvCounter.text = count.toString()
         var image=loadBitmapFromView(view)
-        Toast.makeText(requireContext(), "Item Clicked", Toast.LENGTH_SHORT).show()
         // get location of the clicked view
         if (image != null) {
             animateView(view,image)
         }
 
+            cartList.forEach {
+                if(it.name == data.name){
+                    checkFlag = true
+                    var product=it
+                    Log.d("addToCart: ",it.toString())
+                    product.qty = it.qty++
+                    Toast.makeText(requireContext(), "Item already present in the cart", Toast.LENGTH_SHORT).show()
+                    homeViewModel.updateCart(product)
+                    return
+                }
+            }
 
+        if(!checkFlag){
+            insertProduct(data)
+        }
+
+
+
+
+    }
+
+    fun insertProduct(data:Product){
+        homeViewModel.insertProduct(
+            products = CartProducts(
+                id =0,
+                imageUrl = data.imageUrl,
+                name = data.name,
+                price = data.price,
+                rating = data.rating,
+                qty = 1
+            )
+
+        )
     }
 
     private fun animateView(cardView: View, b: Bitmap) {
         binding!!.imgCpy.setImageBitmap(b)
         binding!!.imgCpy.visibility = View.VISIBLE
         val u = IntArray(2)
-        binding!!.ivCart.getLocationInWindow(u)
+        binding!!.ivCart.getLocationOnScreen(u)
         Log.d( "animateView: ",u.contentToString())
-        binding!!.imgCpy.top=cardView.top
-        binding!!.imgCpy.left=cardView.left
-        binding!!.imgCpy.right=cardView.right
-        binding!!.imgCpy.bottom=cardView.bottom
+        binding!!.imgCpy.layoutParams = cardView.layoutParams
+
+        val v = IntArray(2)
+        cardView.getLocationOnScreen(v)
 
         val animSetXY = AnimatorSet()
+        val x: ObjectAnimator = ObjectAnimator.ofFloat(
+            binding!!.imgCpy,
+            View.X,
+            v[0].toFloat(),
+            u[0].toFloat()-cardView.width/2+40f
+        )
         val y: ObjectAnimator = ObjectAnimator.ofFloat(
             binding!!.imgCpy,
-            "translationY",
-            binding!!.imgCpy.right.toFloat(),
-            u[1].toFloat()
+            View.Y,
+            v[1].toFloat(),
+            u[1].toFloat()-cardView.width
         )
         Log.d("animateView:1 ",binding!!.imgCpy.right.toString())
         Log.d("animateView: 2",binding!!.imgCpy.bottom.toString())
 
-        val x: ObjectAnimator = ObjectAnimator.ofFloat(
-            binding!!.imgCpy,
-            "translationX",
-            binding!!.imgCpy.bottom.toFloat(),
-            u[0].toFloat()
-        )
-
         val sy = ObjectAnimator.ofFloat(binding!!.imgCpy, "scaleY", 0.8f, 0.1f)
         val sx = ObjectAnimator.ofFloat(binding!!.imgCpy, "scaleX", 0.8f, 0.1f)
-        animSetXY.playTogether(x, y, sx, sy)
-        animSetXY.duration = 6500
+        val alphaAnimator = ObjectAnimator.ofFloat(binding!!.imgCpy, View.ALPHA,1f,0f)
+        animSetXY.playTogether(x, y, sx, sy,alphaAnimator)
+        animSetXY.interpolator = AccelerateDecelerateInterpolator()
+        animSetXY.duration = 1000
         animSetXY.start()
     }
 

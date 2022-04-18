@@ -8,10 +8,11 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.venkatesh.shoppingdemo.R
+import com.venkatesh.shoppingdemo.data.local.entity.CartProducts
 import com.venkatesh.shoppingdemo.data.remote.model.Product
 import com.venkatesh.shoppingdemo.databinding.ProductListItemBinding
 
-class ProductAdapter(var context: Context,var list:List<Product>, var clickListener:(Product,View)->Unit): RecyclerView.Adapter<ProductAdapter.ProductViewHolder>(){
+class ProductAdapter(var context: Context,var list:List<Product>,var currentList:List<CartProducts>, var clickListener:(Product,View)->Unit): RecyclerView.Adapter<ProductAdapter.ProductViewHolder>(){
 
     inner class ProductViewHolder(private val binding: ProductListItemBinding):RecyclerView.ViewHolder(binding.root){
 
@@ -23,6 +24,13 @@ class ProductAdapter(var context: Context,var list:List<Product>, var clickListe
             binding.tvProductName.text = data.name
             binding.tvProductPrice.text = "₹"+data.price
             binding.rbProducts.rating = data.rating.toFloat()
+            currentList.forEach {
+                if(data.name.equals(it.name)){
+                    binding.ivCart.setImageDrawable(AppCompatResources.getDrawable(context,R.drawable.ic_baseline_check_24))
+                    binding.ivCart.isEnabled=false
+                    return@forEach
+                }
+            }
             Glide.with(context)
                 .load(data.imageUrl)
                 .placeholder(AppCompatResources.getDrawable(context,R.drawable.preview1))

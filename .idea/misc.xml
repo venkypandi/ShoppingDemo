@@ -6,9 +6,14 @@
         <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/drawable/ic_baseline_shopping_basket_24.xml" value="0.1" />
         <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/drawable/rounded_bottom.xml" value="0.1145" />
+        <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/drawable/rounded_button.xml" value="0.1145" />
+        <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/drawable/rounded_button_orange.xml" value="0.1145" />
+        <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/drawable/rounded_minus.xml" value="0.1145" />
+        <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/drawable/rounded_plus.xml" value="0.1145" />
         <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/drawable/text_rounded.xml" value="0.1145" />
         <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
-        <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/layout/cart_fragment.xml" value="0.20416666666666666" />
+        <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/layout/cart_fragment.xml" value="0.14" />
+        <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/layout/cart_list_item.xml" value="0.14" />
         <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/layout/home_fragment.xml" value="0.20416666666666666" />
         <entry key="..\:/Android Projects/ShoppingDemo/app/src/main/res/layout/product_list_item.xml" value="0.20416666666666666" />
       </map>
