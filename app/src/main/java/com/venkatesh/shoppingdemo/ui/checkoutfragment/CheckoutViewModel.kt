@@ -10,7 +10,6 @@ import javax.inject.Inject
 @HiltViewModel
 class CheckoutViewModel @Inject constructor(private var repository: ProductRepository):ViewModel() {
 
-
     fun deleteAllProducts(){
         viewModelScope.launch {
             repository.deleteAllProducts()

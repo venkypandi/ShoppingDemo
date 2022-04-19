@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.venkatesh.shoppingdemo.data.local.dao.CartDao
 import com.venkatesh.shoppingdemo.data.local.db.CartDatabase
 import com.venkatesh.shoppingdemo.data.remote.api.ShoppingApiService
+import com.venkatesh.shoppingdemo.data.repository.ProductRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
